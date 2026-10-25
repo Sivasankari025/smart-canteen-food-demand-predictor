@@ -1,0 +1,733 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+
+    <meta charset="UTF-8">
+
+    <meta
+        name="viewport"
+        content="width=device-width, initial-scale=1.0"
+    >
+
+    <title>
+        Smart Canteen | Food Demand Predictor
+    </title>
+
+    <link
+        rel="stylesheet"
+        href="{{ url_for('static', filename='style.css') }}"
+    >
+
+</head>
+
+
+<body>
+
+    <!-- Background -->
+    <div class="background"></div>
+
+
+    <!-- Main Application -->
+    <main class="app">
+
+
+        <!-- ================= HEADER ================= -->
+
+        <header class="header">
+
+            <div class="brand">
+
+                <div class="logo">
+                    🍽️
+                </div>
+
+                <div>
+
+                    <h1>
+                        Smart Canteen
+                    </h1>
+
+                    <p>
+                        AI-Powered Food Demand Predictor
+                    </p>
+
+                </div>
+
+            </div>
+
+
+            <div class="status">
+
+                <span class="status-dot"></span>
+
+                Model Online
+
+            </div>
+
+        </header>
+
+
+
+        <!-- ================= HERO ================= -->
+
+        <section class="hero">
+
+            <div class="hero-text">
+
+                <span class="badge">
+                    MACHINE LEARNING
+                </span>
+
+                <h2>
+                    Predict food demand
+                    <span>before you cook.</span>
+                </h2>
+
+                <p>
+                    Enter today's canteen information
+                    and let our machine learning model
+                    estimate the number of food portions
+                    required.
+                </p>
+
+            </div>
+
+
+            <div class="hero-icon">
+                📊
+            </div>
+
+        </section>
+
+
+
+        <!-- ================= DASHBOARD ================= -->
+
+        <section class="dashboard">
+
+
+            <!-- INPUT CARD -->
+
+            <div class="card input-card">
+
+                <div class="card-header">
+
+                    <div>
+
+                        <span class="section-number">
+                            
+                        </span>
+
+                        <h3>
+                            Canteen Information
+                        </h3>
+
+                        <p>
+                            Enter today's operating details
+                        </p>
+
+                    </div>
+
+                </div>
+
+
+
+                <form id="predictionForm">
+
+
+                    <!-- Week -->
+
+                    <div class="form-group">
+
+                        <label>
+                            Week Number
+                        </label>
+
+                        <div class="input-wrapper">
+
+                            <span>
+                                📅
+                            </span>
+
+                            <input
+                                type="number"
+                                id="week"
+                                value="100"
+                                min="1"
+                                required
+                            >
+
+                        </div>
+
+                    </div>
+
+
+
+                    <!-- Center -->
+
+                    <div class="form-row">
+
+
+                        <div class="form-group">
+
+                            <label>
+                                Canteen Center ID
+                            </label>
+
+                            <div class="input-wrapper">
+
+                                <span>
+                                    🏢
+                                </span>
+
+                                <input
+                                    type="number"
+                                    id="center_id"
+                                    value="10"
+                                    min="1"
+                                    required
+                                >
+
+                            </div>
+
+                        </div>
+
+
+                        <div class="form-group">
+
+                            <label>
+                                Meal ID
+                            </label>
+
+                            <div class="input-wrapper">
+
+                                <span>
+                                    🍛
+                                </span>
+
+                                <input
+                                    type="number"
+                                    id="meal_id"
+                                    value="1885"
+                                    min="1"
+                                    required
+                                >
+
+                            </div>
+
+                        </div>
+
+
+                    </div>
+
+
+
+                    <!-- Food Category -->
+
+                    <div class="form-group">
+
+                        <label>
+                            Food Category
+                        </label>
+
+                        <select id="category" required>
+
+                            <option value="Beverages">
+                                🥤 Beverages
+                            </option>
+
+                            <option value="Rice Bowl">
+                                🍚 Rice Bowl
+                            </option>
+
+                            <option value="Sandwich">
+                                🥪 Sandwich
+                            </option>
+
+                            <option value="Starters">
+                                🍽️ Starters
+                            </option>
+
+                        </select>
+
+                    </div>
+
+
+
+                    <!-- Cuisine -->
+
+                    <div class="form-group">
+
+                        <label>
+                            Cuisine
+                        </label>
+
+                        <select id="cuisine" required>
+
+                            <option value="Indian">
+                                🍚 Indian
+                            </option>
+
+                            <option value="Italian">
+                                🍝 Italian
+                            </option>
+
+                            <option value="Continental">
+                                🍴 Continental
+                            </option>
+
+                        </select>
+
+                    </div>
+
+
+
+                    <!-- Center Type -->
+
+                    <div class="form-group">
+
+                        <label>
+                            Canteen Type
+                        </label>
+
+                        <select id="center_type" required>
+
+                            <option value="TYPE_A">
+                                Type A
+                            </option>
+
+                            <option value="TYPE_B">
+                                Type B
+                            </option>
+
+                            <option value="TYPE_C">
+                                Type C
+                            </option>
+
+                        </select>
+
+                    </div>
+
+
+
+                    <!-- Operating Area -->
+
+                    <div class="form-group">
+
+                        <label>
+                            Operating Area
+                            <span id="areaValue">
+                                4.0
+                            </span>
+                        </label>
+
+                        <input
+                            type="range"
+                            id="op_area"
+                            min="1"
+                            max="10"
+                            step="0.1"
+                            value="4"
+                        >
+
+                    </div>
+
+
+
+                    <!-- PRICE SECTION -->
+
+                    <div class="price-section">
+
+                        <h4>
+                            💰 Pricing Information
+                        </h4>
+
+
+                        <div class="form-row">
+
+
+                            <div class="form-group">
+
+                                <label>
+                                    Base Price
+                                </label>
+
+                                <div class="price-input">
+
+                                    <span>₹</span>
+
+                                    <input
+                                        type="number"
+                                        id="base_price"
+                                        value="200"
+                                        min="1"
+                                        step="0.01"
+                                        required
+                                    >
+
+                                </div>
+
+                            </div>
+
+
+
+                            <div class="form-group">
+
+                                <label>
+                                    Checkout Price
+                                </label>
+
+                                <div class="price-input">
+
+                                    <span>₹</span>
+
+                                    <input
+                                        type="number"
+                                        id="checkout_price"
+                                        value="150"
+                                        min="1"
+                                        step="0.01"
+                                        required
+                                    >
+
+                                </div>
+
+                            </div>
+
+
+                        </div>
+
+                    </div>
+
+
+
+                    <!-- PROMOTIONS -->
+
+                    <div class="options-section">
+
+                        <h4>
+                            📢 Marketing
+                        </h4>
+
+
+                        <div class="toggle-row">
+
+
+                            <label class="toggle-item">
+
+                                <input
+                                    type="checkbox"
+                                    id="promotion"
+                                >
+
+                                <span class="toggle"></span>
+
+                                <span>
+                                    Promotion
+                                </span>
+
+                            </label>
+
+
+
+                            <label class="toggle-item">
+
+                                <input
+                                    type="checkbox"
+                                    id="featured"
+                                >
+
+                                <span class="toggle"></span>
+
+                                <span>
+                                    Featured
+                                </span>
+
+                            </label>
+
+
+                        </div>
+
+                    </div>
+
+
+
+                    <!-- BUTTONS -->
+
+                    <div class="button-row">
+
+                        <button
+                            type="submit"
+                            class="predict-btn"
+                            id="predictBtn"
+                        >
+
+                            <span>
+                                🔮
+                            </span>
+
+                            Predict Food Demand
+
+                        </button>
+
+
+                        <button
+                            type="button"
+                            class="reset-btn"
+                            id="resetBtn"
+                        >
+
+                            Reset
+
+                        </button>
+
+                    </div>
+
+
+                </form>
+
+            </div>
+
+
+
+            <!-- RESULT CARD -->
+
+            <div class="card result-card">
+
+
+                <div class="result-header">
+
+                    <span class="section-number">
+                       
+                    </span>
+
+                    <h3>
+                        Prediction Result
+                    </h3>
+
+                </div>
+
+
+
+                <!-- Initial state -->
+
+                <div
+                    class="empty-result"
+                    id="emptyResult"
+                >
+
+                    <div class="empty-icon">
+                        🍱
+                    </div>
+
+                    <h3>
+                        Ready to predict
+                    </h3>
+
+                    <p>
+                        Enter the canteen details
+                        and click the prediction button.
+                    </p>
+
+                </div>
+
+
+
+                <!-- Loading -->
+
+                <div
+                    class="loading"
+                    id="loading"
+                >
+
+                    <div class="spinner"></div>
+
+                    <p>
+                        AI is analyzing demand...
+                    </p>
+
+                </div>
+
+
+
+                <!-- Prediction -->
+
+                <div
+                    class="prediction-result"
+                    id="predictionResult"
+                >
+
+
+                    <div class="prediction-icon">
+                        🍽️
+                    </div>
+
+
+                    <p class="prediction-label">
+                        Expected Food Demand
+                    </p>
+
+
+                    <div class="prediction-number">
+
+                        <span id="prediction">
+                            0
+                        </span>
+
+                        <small>
+                            portions
+                        </small>
+
+                    </div>
+
+
+                    <div class="divider"></div>
+
+
+                    <div class="recommendation">
+
+                        <div class="recommendation-icon">
+                            💡
+                        </div>
+
+                        <div>
+
+                            <span>
+                                Recommended preparation
+                            </span>
+
+                            <strong>
+                                <span id="recommended">
+                                    0
+                                </span>
+                                portions
+                            </strong>
+
+                        </div>
+
+                    </div>
+
+
+                    <p class="result-note">
+                        Recommendation includes
+                        a 5% preparation buffer.
+                    </p>
+
+
+                    <button
+                        class="new-prediction"
+                        id="newPrediction"
+                    >
+                        Make another prediction
+                    </button>
+
+
+                </div>
+
+            </div>
+
+
+        </section>
+
+
+
+        <!-- ================= INFO CARDS ================= -->
+
+        <section class="info-grid">
+
+
+            <div class="info-card">
+
+                <div class="info-icon">
+                    🤖
+                </div>
+
+                <div>
+
+                    <h4>
+                        Machine Learning
+                    </h4>
+
+                    <p>
+                        Random Forest Regression
+                    </p>
+
+                </div>
+
+            </div>
+
+
+
+            <div class="info-card">
+
+                <div class="info-icon">
+                    📈
+                </div>
+
+                <div>
+
+                    <h4>
+                        Demand Analysis
+                    </h4>
+
+                    <p>
+                        MAE & RMSE evaluated
+                    </p>
+
+                </div>
+
+            </div>
+
+
+
+            <div class="info-card">
+
+                <div class="info-icon">
+                    ⚡
+                </div>
+
+                <div>
+
+                    <h4>
+                        Fast Prediction
+                    </h4>
+
+                    <p>
+                        Flask REST API
+                    </p>
+
+                </div>
+
+            </div>
+
+
+        </section>
+
+
+
+        <!-- FOOTER -->
+
+        <footer>
+
+            <p>
+                Smart Canteen • ML Mini Project
+            </p>
+
+            <p>
+                Built with Python • Flask • Scikit-learn
+            </p>
+
+        </footer>
+
+
+    </main>
+
+
+    <script
+        src="{{ url_for('static', filename='script.js') }}"
+    ></script>
+
+</body>
+
+</html>
